@@ -1,0 +1,37 @@
+
+<%if articles['records'].keys.size > 0%>
+	<%title=issn=eissn=vol=issue=year=''%>
+	<%articles['records'].keys.each do |record_position|%>
+		<%if 
+			articles['records'][record_position]['record_journal_title'] and 
+			articles['records'][record_position]['record_journal_issn'] and 
+			articles['records'][record_position]['record_journal_eissn'] and
+			articles['records'][record_position]['record_journal_vol'] and
+			articles['records'][record_position]['record_journal_issue'] and
+			articles['records'][record_position]['record_journal_year']
+			%>
+		<% title = articles['records'][record_position]['record_journal_title']%>
+		<% issn = articles['records'][record_position]['record_journal_issn']%>
+		<% eissn = articles['records'][record_position]['record_journal_eissn']%>
+		<% vol = articles['records'][record_position]['record_journal_vol']%>
+		<% issue = articles['records'][record_position]['record_journal_issue']%>
+		<% year = articles['records'][record_position]['record_journal_year']%>
+		<%break%>
+		<%end%>
+	<%end%>
+	<h1><%=title+" (#{issn})"%></h1>
+<%end%>
+<ul>
+	<%groups.each do |group|%>
+	<li>
+		<p><b><%=group['name']%>, issue: </b>
+		<%group['issues'].each_with_index do |issue,index|%>
+		<a href="<%="#{@proxy_url}/#{issn}/#{issue['jobro_key']}/get_articles"%>"><%=issue['issue_number']%></a><%if index != group['issues'].size-1%>, <%end%>
+		<!--
+			<a href="<%=url_for :action=>:template,:task=>'get_articles',:issue_key => issue['jobro_key'],:proxy_url=>@proxy_url,:remote=>true%>"><%=issue['issue_number']%></a><%if index != group['issues'].size-1%>, <%end%>
+		-->
+		<%end%>
+		</p>
+	</li>
+	<%end%>
+</ul>

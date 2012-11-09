@@ -1,0 +1,3 @@
+<next_key for="<%=@issue_key%>">
+<%= render :partial => "api/get_key", :locals => {:new_key => @new_issue_key, :is_bound => @is_bound, :msg => 'The given key matches the latest issue'}%>
+</next_key>

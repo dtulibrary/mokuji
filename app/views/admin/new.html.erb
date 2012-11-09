@@ -1,0 +1,21 @@
+<h1>New user</h1>
+<%= form_for :user, :url => { :action => :create } do |f| %>
+  <p>
+    <%= f.label :long_name %><br>
+    <%= f.text_field :ln %>
+  </p>
+  <p>
+    <%= f.label :short_name %><br>
+    <%= f.text_field :sn %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
+<%= link_to 'Back', :action => :index %>
+<% if flash[:notice] %>
+  <p class="notice"><%= flash[:notice] %></p>
+<% end %>
+<% if flash[:error] %>
+  <p class="error"><%= flash[:error] %></p>
+<% end %>

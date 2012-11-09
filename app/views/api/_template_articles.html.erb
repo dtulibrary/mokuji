@@ -1,0 +1,34 @@
+<%if articles['records'].keys.size > 0%>
+	<%title=issn=eissn=vol=issue=year=''%>
+	<%articles['records'].keys.each do |record_position|%>
+		<%if 
+			articles['records'][record_position]['record_journal_title'] and 
+			articles['records'][record_position]['record_journal_issn'] and 
+			articles['records'][record_position]['record_journal_eissn'] and
+			articles['records'][record_position]['record_journal_vol'] and
+			articles['records'][record_position]['record_journal_issue'] and
+			articles['records'][record_position]['record_journal_year']
+			%>
+		<% title = articles['records'][record_position]['record_journal_title']%>
+		<% issn = articles['records'][record_position]['record_journal_issn']%>
+		<% eissn = articles['records'][record_position]['record_journal_eissn']%>
+		<% vol = articles['records'][record_position]['record_journal_vol']%>
+		<% issue = articles['records'][record_position]['record_journal_issue']%>
+		<% year = articles['records'][record_position]['record_journal_year']%>
+		<%break%>
+		<%end%>
+	<%end%>
+	<h1><%=title+" (#{issn})"%></h1>
+	<h3><%="#{year}, vol. #{vol}, issue #{issue}"%></h3>
+
+	<table>
+	<%articles['records'].keys.each do |record_position|%>
+	<tr>
+		<td class="recordPage">Page</td>
+		<td class="recordPageNumber"><%=articles['records'][record_position]['record_page']%>:&nbsp;</td>
+		<td class="recordTitle"><%=articles['records'][record_position]['record_title']%></td>
+	</tr>
+	
+	<%end%>
+	</table>
+<%end%>

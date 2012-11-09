@@ -1,0 +1,4 @@
+<%if is_bound %>
+<p class="error">Lower bound: go forward to reach the next issue of this journal.</p>
+<%end%>
+<%=render :partial => "api/template_articles", :locals=>{:articles=>articles}%>

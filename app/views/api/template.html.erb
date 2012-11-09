@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ToCService</title>
+  <%= stylesheet_link_tag    "application", "template", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <!--TODO:This should be changed and/or removed!-->
+  <link href="http://0.0.0.0:3000/assets/template.css?body=1" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="page">
+<div id="header">
+</div>
+<div id="content">
+	<div id="dataDiv">
+		<%if not @task or @task == 'get_issue_keys'%>
+		<%=render :partial => "api/template_issue_keys", :locals=>{:groups=>@groups,:articles=>@articles}%>
+		<%elsif @task == 'get_articles'%>
+		<%=render :partial => "api/template_articles", :locals=>{:articles=>@articles}%>
+		<%elsif @task == 'get_prev_key'%>
+		<%=render :partial => "api/template_prev_key", :locals=>{:is_bound=>@is_bound,:articles=>@articles}%>
+		<%elsif @task == 'get_next_key'%>
+		<%=render :partial => "api/template_next_key", :locals=>{:is_bound=>@is_bound,:articles=>@articles}%>
+		<%else%>
+		<p>Error: couldn't find any issue_keys for the give issn: <%=@issn%></p>
+		<%end%>
+	</div>	
+	<div id="buttonGroup">
+		<a href="<%="#{@proxy_url}/#{@issn}/#{@issue_key}/get_prev_key"%>"><img class="left"/></a>
+		<a class="homeWrapper" href="<%="#{@proxy_url}/#{@issn}/get_issue_keys"%>"><img class="home"/></a>
+		<a href="<%="#{@proxy_url}/#{@issn}/#{@issue_key}/get_next_key"%>"><img class="right"/></a>
+	</div>
+	<div style="clear:both;"></div>
+</div>
+</div>
+</body>
+</html>

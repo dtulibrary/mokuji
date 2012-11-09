@@ -1,0 +1,40 @@
+<records>
+    <number_of_records><%=@articles['number_of_records']%></number_of_records>
+    <journal>
+        <%if @articles['records'].keys.size > 0%>
+            <%@articles['records'].keys.each do |record_position|%>
+                <%if 
+                    @articles['records'][record_position]['record_journal_title'] and 
+                    @articles['records'][record_position]['record_journal_issn'] and 
+                    @articles['records'][record_position]['record_journal_eissn'] and
+                    @articles['records'][record_position]['record_journal_vol'] and
+                    @articles['records'][record_position]['record_journal_issue'] and
+                    @articles['records'][record_position]['record_journal_year']
+                    %>
+        <title><%=@articles['records'][record_position]['record_journal_title']%></title>
+        <issn><%=@articles['records'][record_position]['record_journal_issn']%></issn>
+        <eissn><%=@articles['records'][record_position]['record_journal_eissn']%></eissn>
+        <vol><%=@articles['records'][record_position]['record_journal_vol']%></vol>
+        <issue><%=@articles['records'][record_position]['record_journal_issue']%></issue>
+        <year><%=@articles['records'][record_position]['record_journal_year']%></year>
+                    <%break%>
+                <%end%>
+            <%end%>
+        <%end%>
+    </journal>
+    <%@articles['records'].keys.each do |record_position|%>
+    <record position="<%=record_position%>" type="<%=@articles['records'][record_position]['record_type']%>">
+        <title><%=@articles['records'][record_position]['record_title']%></title>
+        <language><%=@articles['records'][record_position]['record_language']%></language>
+        <page><%=@articles['records'][record_position]['record_page']%></page>
+        <authors>
+            <%@articles['records'][record_position]['authors'].each do |author|%>
+            <author>
+                <name><%=author['name']%></name>
+                <role><%=author['role']%></role>
+            </author>
+            <%end%>
+        </authors>
+    </record>
+    <%end%>
+</records>

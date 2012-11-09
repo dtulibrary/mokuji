@@ -1,0 +1,7 @@
+jobro          :
+  url                     : http://jobroexample.com
+zebra          :
+  url                     : http://zebraexample.com
+authentication :
+  username                : bla
+  password                : blabla

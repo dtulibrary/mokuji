@@ -1,0 +1,95 @@
+body{
+	background: #EEE;
+	color: black;
+	font-family: verdana, sans-serif;
+	font-size: 8pt;
+	margin: 0px;
+	padding: 0px;
+}
+ul{
+	list-style:none;
+	padding:0px;
+}
+li {
+	margin-bottom:10px;
+}
+a{
+	color: #369;
+	text-decoration: none;
+}
+table{
+	margin-bottom:20px;
+	border-spacing:5px;
+}
+#page{
+	width:1000px;
+	border:1px solid black;
+	margin: 0px auto;
+	text-align: left;
+	background:white;
+}
+#header{
+	background-image:url("http://www.ethz.ch/images/head_bg_home_c000.jpg");
+	width:100%;
+	height:100px;
+	border-bottom: 3px solid #E90;
+}
+#content{
+	width:100%;
+}
+#dataDiv{
+	/*margin-left:50px;*/
+	margin:0px auto;
+	width:85%;
+}
+.error{
+	color:red;
+	font-size: 12pt;
+}
+.recordPage{
+	/*display: inline;
+	float: left;
+	height:20px;*/
+	font-weight: bold;
+	vertical-align:top;
+}
+.recordPageNumber{
+	text-align:right;
+	/*width:60px;
+	display: inline;
+	float: left;
+	height:20px;*/
+	font-weight: bold;
+	vertical-align:top;
+}
+.recordTitle{
+	width:725px;
+	/*display:inline;
+	height:20px;*/
+	vertical-align:top;
+}
+.homeWrapper{
+	margin-left:415px;
+	position:absolute;
+}
+.home{
+	width:50px;
+	height:50px;
+	background-image:url("/assets/template/house.png");
+	background-size: 50px 50px;
+	float:left;
+}
+.left{
+	width:50px;
+	height:50px;
+	background-image:url("/assets/template/arrow_left.png");
+	background-size: 50px 50px;
+	float:left;
+}
+.right{
+	width:50px;
+	height:50px;
+	background-image:url("/assets/template/arrow_right.png");
+	background-size: 50px 50px;
+	float:right;
+}

@@ -1,0 +1,5 @@
+<%if not @task or @task == 'get_issue_keys' %>
+$('#dataDiv').html("<%= escape_javascript(render :partial => "api/template_issue_keys", :locals=>{:groups=>@groups}) %>");
+<%else%>
+$('#dataDiv').html("testing testing");
+<%end%>

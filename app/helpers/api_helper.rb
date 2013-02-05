@@ -1,25 +1,45 @@
 require 'net/http'
 require 'uri'
 require 'libxml'
+require 'rsolr'
 
 module ApiHelper
   include LibXML
   
+  SOLR_META_URL  = API_CONFIG['solr']['meta']
   JOBRO_BASE_URL = "#{API_CONFIG['jobro']['url']}?operation=searchRetrieve&version=1.2&query=jobro="
   ZEBRA_BASE_URL = API_CONFIG['zebra']['url']
+  
+  #TODO: for testing only, are we keeping the zebra code for something?
+  @useSolr = true
   
   ### Helper functions ###
   private
   def articles_helper(issue_key)
-    query_params = "/?operation=searchRetrieve&version=1.1&maximumRecords=200&x-pquery="
-    query = "@attr 4=3 @attr stas-attset 1=3043 #{issue_key}"
-    response = get_data(ZEBRA_BASE_URL+query_params,query)
-    if response
-      articles = parse_zebra_response(response) #result
-      return articles
-    else
+    if(!@useSolr) 
+     query_params = "/?operation=searchRetrieve&version=1.1&maximumRecords=200&x-pquery="
+     query = "@attr 4=3 @attr stas-attset 1=3043 #{issue_key}"
+     response = get_data(ZEBRA_BASE_URL+query_params,query) 
+     if response
+       articles = parse_zebra_response(response) #result
+       return articles
+     else
       #render :status=>:not_found and return
       return
+      end
+    else
+      query_params = {:q => "issn_s:#{issue_key}"}
+      query_handler = 'select'
+      connection = RSolr.connect :url => SOLR_METAL_URL
+      response = connection.get query_handler, :params => query_params
+      if response
+        articles = parse_solr_response(response) #result
+        return articles
+      else
+        #render :status=>:not_found and return
+        return
+      end
+      
     end
   end
   
@@ -100,6 +120,36 @@ module ApiHelper
       return nil,nil
     end
   end
+  
+  ### Parse solr-metastore response ###
+  def parse_solr_response(data)
+    result = Hash.new
+    result['records'] = Hash.new
+    docList = data['response']['docs']
+    docList.each_with_index do |doc,pos|
+      result['records'][pos] = Hash.new
+      result['records'][pos]['record_type'] = (doc['format'] ? doc['format'] : '')
+      result['records'][pos]['record_title'] = (doc['title_t'] ? doc['title_t'] : '')
+      result['records'][pos]['record_language'] = (doc['language_s'] ? doc['language_s'] : '')
+      
+      # Extract issn and eissn from the issn_s field. Assuming eissn is always last.
+      result['records'][pos]['record_journal_issn'] = (doc['issn_s'][0] ? doc['issn_s'][0] : '')
+      result['records'][pos]['record_journal_eissn'] = (doc['issn_s'][doc['issn_s'].length-1] ? doc['issn_s'][doc['issn_s'].length-1] : '')
+      
+      result['records'][pos]['record_journal_title'] = (doc['journal_title_s'] ? doc['journal_title_s'] : '')  
+      result['records'][pos]['record_journal_vol'] = (doc['journal_vol_s'] ? doc['journal_vol_s'] : '')
+      result['records'][pos]['record_journal_issue'] = (doc['journal_issue_s'] ? doc['journal_issue_s'] : '')
+      result['records'][pos]['record_journal_year'] = (doc['pub_date_ti'] ? doc['pub_date_ti'] : 0)
+      result['records'][pos]['record_page'] = (doc['journal_page_s'] ? doc['journal_page_s'] : '')
+      
+      result['records'][pos]['authors'] = Array.new # Mirrored the zebra-parsing very closely, might want to rewrite to get rid of the role field.
+        doc['author_t'].each do |author|
+          result['records'][pos]['authors'] << {:name => author['name'], :role => '' }
+        end
+    end
+    return result
+  end
+  
   ### Parse response ###
   private
   def parse_zebra_response(data)

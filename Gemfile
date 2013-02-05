@@ -23,6 +23,7 @@ end
 group :test do
   gem 'rspec-rails'
   gem 'webmock'
+  gem 'rsolr'
 end
 
 gem 'jquery-rails'
